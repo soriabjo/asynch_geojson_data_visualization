@@ -1,0 +1,111 @@
+{
+  "type": "FeatureCollection",
+  "name": "states",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "OR",
+        "year": 2012,
+        "notes": "visited for hiking, and Portland Trailblazers games"
+      },
+      "geometry": {
+        "coordinates": [
+          -120.3905752069719,
+          43.681060724082755
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "CA",
+        "year": 2015,
+        "notes": "visited cousins in Orange County"
+      },
+      "geometry": {
+        "coordinates": [
+          -120.44633704440064,
+          37.991473089502534
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "NV",
+        "year": 2015,
+        "notes": "visited uncles"
+      },
+      "geometry": {
+        "coordinates": [
+          -116.0969137249635,
+          39.513391534818766
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "NY",
+        "year": 2021,
+        "notes": "visited in the Summer as part of family travels"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.38705932831132,
+          40.74970896047762
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "MA",
+        "year": 2021,
+        "notes": "visited in the Summer as part of family travels"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.99431150141814,
+          42.30645309096147
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "RI",
+        "year": 2021,
+        "notes": "visited in the Summer as part of family travels"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.67275865116946,
+          41.73682456465542
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "state": "WA",
+        "year": 2001,
+        "notes": "born and raised here"
+      },
+      "geometry": {
+        "coordinates": [
+          -120.42465900707208,
+          47.12167131859755
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}

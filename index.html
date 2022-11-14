@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-9">
+        <title>Places I've Been To</title>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+
+            #container {
+                display: flex;
+                height: 100vh;
+                flex-direction: row;
+                align-items: stretch;
+            }
+
+            #side-panel {
+                flex-basis: 500px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 250px;
+                background: rgb(255, 255, 255);
+                margin-left: 1625px;
+                margin-bottom: 50px;
+                padding: 10px 20px 10px 10px;
+                border-radius: 3px;
+            }
+
+            #map {
+                flex-grow: 1;
+                width: 100%;
+            }
+
+            button {
+                margin-bottom: 10px;
+            }
+
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 100%;
+                border: 1px solid #ddd;
+            }
+
+            th, td {
+                text-align: left;
+                padding: 16px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            @media screen and (max-width: 1024px) {
+                #side-panel {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main id="container">
+            <div id="map"></div>
+            <div id="side-panel">
+                <h2>U.S States Visited List (Contiguous)</h2>
+                <button onclick="sortTable()">Sort by Most Recently Visited</button>
+
+                <table>
+                    <tr>
+                        <th>state</th>
+                        <th>year</th>
+                        <th>notes</th>
+                    </tr>
+                </table>
+            </div>
+        </main>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw'; // don't want to use personal API key, used tutorials
+            let map = new mapboxgl.Map({
+                container: 'map', // container ID
+                style: 'mapbox://styles/mapbox/dark-v10', // style URL
+                zoom: 4, // starting zoom
+                center: [-95.7129, 37.0902] // starting center
+            });
+
+            async function geojsonFetch() {
+                let response, states, us, table;
+                response = await fetch('assets/states.geojson');
+                states = await response.json();
+                response = await fetch('assets/unitedstates.json');
+                us = await response.json();
+                
+                //load data to the map as new layers and table on the side.
+                map.on('load', function loadingData() {
+
+                    map.addSource('states', {
+                        type: 'geojson',
+                        data: states
+                    });
+
+                    map.addLayer({
+                        'id': 'states-layer',
+                        'type': 'circle',
+                        'source': 'states',
+                        'paint': {
+                            'circle-radius': 8,
+                            'circle-stroke-width': 2,
+                            'circle-color': 'green',
+                            'circle-stroke-color': 'green'
+                        }
+                    });
+
+
+                    map.addSource('us', {
+                        type: 'geojson',
+                        data: us
+                    });
+
+                    map.addLayer({
+                        'id': 'us-layer',
+                        'type': 'fill',
+                        'source': 'us',
+                        'paint': {
+                            'fill-color': '#808080',
+                            'fill-opacity': 0.5
+                        }
+                    });
+
+                });
+            
+                table = document.getElementsByTagName("table")[0];
+                let row, cell1, cell2, cell3;
+                for (let i = 0; i < states.features.length; i++) {
+                    row = table.insertRow(-1);
+                    cell1 = row.insertCell(0);
+                    cell2 = row.insertCell(1);
+                    cell3 = row.insertCell(2);
+                    cell1.innerHTML = states.features[i].properties.state;
+                    cell2.innerHTML = states.features[i].properties.year;
+                    cell3.innerHTML = states.features[i].properties.notes;
+                }
+            };
+
+            geojsonFetch();
+
+            // define the function to sort table
+            function sortTable(e) {
+                let table, rows, switching, i, x, y, shouldSwitch;
+                table = document.getElementsByTagName("table")[0];
+                switching = true;
+                /*Make a loop that will continue until
+                no switching has been done:*/
+                while (switching) {
+                    //start by saying: no switching is done:
+                    switching = false;
+                    rows = table.rows;
+                    /*Loop through all table rows (except the
+                    first, which contains table headers):*/
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        //start by saying there should be no switching:
+                        shouldSwitch = false;
+                        /*Get the two elements you want to compare,
+                        one from current row and one from the next:*/
+                        x = parseInt(rows[i].getElementsByTagName("td")[1].innerHTML);
+                        console.log(x);
+                        console.log('---');
+                        y = parseInt(rows[i + 1].getElementsByTagName("td")[1].innerHTML);
+                        console.log(y);
+                        //check if the two rows should switch place:
+                        if (x < y) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                    if (shouldSwitch) {
+                        /*If a switch has been marked, make the switch
+                        and mark that a switch has been done:*/
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

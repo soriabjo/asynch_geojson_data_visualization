@@ -1,1 +1,3 @@
-# aysnch_geojson_data_visualization
+# Lab 3: Asynchronous GeoJSON Data Loading and Visualization
+
+See webpage !
